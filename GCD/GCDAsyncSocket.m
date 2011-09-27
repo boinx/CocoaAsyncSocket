@@ -4094,6 +4094,10 @@ enum GCDAsyncSocketConfig
 				{
 					waiting = YES;
 				}
+				if (bytesRead != bytesToRead)
+				{
+					waiting = YES;
+				}
 			}
 		}
 		
