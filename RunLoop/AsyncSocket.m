@@ -1280,14 +1280,14 @@ static void MyCFWriteStreamCallback(CFWriteStreamRef stream, CFStreamEventType t
 	if(interface == nil || ([interface length] == 0))
 	{
 		// Accept on ANY address
-		struct sockaddr_in nativeAddr4;
+		struct sockaddr_in nativeAddr4 = {};
 		nativeAddr4.sin_len         = sizeof(struct sockaddr_in);
 		nativeAddr4.sin_family      = AF_INET;
 		nativeAddr4.sin_port        = htons(port);
 		nativeAddr4.sin_addr.s_addr = htonl(INADDR_ANY);
 		memset(&(nativeAddr4.sin_zero), 0, sizeof(nativeAddr4.sin_zero));
 		
-		struct sockaddr_in6 nativeAddr6;
+		struct sockaddr_in6 nativeAddr6 = {};
 		nativeAddr6.sin6_len       = sizeof(struct sockaddr_in6);
 		nativeAddr6.sin6_family    = AF_INET6;
 		nativeAddr6.sin6_port      = htons(port);
@@ -1302,14 +1302,14 @@ static void MyCFWriteStreamCallback(CFWriteStreamRef stream, CFStreamEventType t
 	else if([interface isEqualToString:@"localhost"] || [interface isEqualToString:@"loopback"])
 	{
 		// Accept only on LOOPBACK address
-		struct sockaddr_in nativeAddr4;
+		struct sockaddr_in nativeAddr4 = {};
 		nativeAddr4.sin_len         = sizeof(struct sockaddr_in);
 		nativeAddr4.sin_family      = AF_INET;
 		nativeAddr4.sin_port        = htons(port);
 		nativeAddr4.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 		memset(&(nativeAddr4.sin_zero), 0, sizeof(nativeAddr4.sin_zero));
 	
-		struct sockaddr_in6 nativeAddr6;
+		struct sockaddr_in6 nativeAddr6 = {};
 		nativeAddr6.sin6_len       = sizeof(struct sockaddr_in6);
 		nativeAddr6.sin6_family    = AF_INET6;
 		nativeAddr6.sin6_port      = htons(port);
@@ -1416,7 +1416,10 @@ static void MyCFWriteStreamCallback(CFWriteStreamRef stream, CFStreamEventType t
 		UInt16 chosenPort = [self localPortFromCFSocket4:theSocket4];
 		
 		struct sockaddr_in6 *pSockAddr6 = (struct sockaddr_in6 *)[address6 bytes];
-		pSockAddr6->sin6_port = htons(chosenPort);
+		if (pSockAddr6)
+		{
+			pSockAddr6->sin6_port = htons(chosenPort);
+		}
     }
 	
 	if (theSocket6)
