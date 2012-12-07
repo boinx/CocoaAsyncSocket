@@ -3135,6 +3135,7 @@ enum GCDAsyncSocketConfig
 			
 			if (getpeername(socket6FD, (struct sockaddr *)&sockaddr6, &sockaddr6len) == 0)
 			{
+				[result release];
 				result = [[NSData alloc] initWithBytes:&sockaddr6 length:sockaddr6len];
 			}
 		}
@@ -3171,6 +3172,7 @@ enum GCDAsyncSocketConfig
 			
 			if (getsockname(socket6FD, (struct sockaddr *)&sockaddr6, &sockaddr6len) == 0)
 			{
+				[result release];
 				result = [[NSData alloc] initWithBytes:&sockaddr6 length:sockaddr6len];
 			}
 		}
