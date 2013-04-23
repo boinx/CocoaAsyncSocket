@@ -4153,14 +4153,17 @@ Failed:
 	{
 		AsyncSpecialPacket *tlsPacket = (AsyncSpecialPacket *)theCurrentRead;
 		
-		BOOL didStartOnReadStream = CFReadStreamSetProperty(theReadStream, kCFStreamPropertySSLSettings,
-														   (CFDictionaryRef)tlsPacket->tlsSettings);
-		BOOL didStartOnWriteStream = CFWriteStreamSetProperty(theWriteStream, kCFStreamPropertySSLSettings,
-															 (CFDictionaryRef)tlsPacket->tlsSettings);
-		
-		if(!didStartOnReadStream || !didStartOnWriteStream)
+		if(tlsPacket)
 		{
-            [self closeWithError:[self getSocketError]];
+			BOOL didStartOnReadStream = CFReadStreamSetProperty(theReadStream, kCFStreamPropertySSLSettings,
+																(CFDictionaryRef)tlsPacket->tlsSettings);
+			BOOL didStartOnWriteStream = CFWriteStreamSetProperty(theWriteStream, kCFStreamPropertySSLSettings,
+																  (CFDictionaryRef)tlsPacket->tlsSettings);
+			
+			if(!didStartOnReadStream || !didStartOnWriteStream)
+			{
+				[self closeWithError:[self getSocketError]];
+			}
 		}
 	}
 }
